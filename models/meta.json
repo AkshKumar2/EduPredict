@@ -1,0 +1,790 @@
+{
+  "columns": [
+    "gender",
+    "age_band",
+    "highest_education",
+    "region",
+    "imd_band",
+    "disability",
+    "code_module",
+    "semester",
+    "num_of_prev_attempts",
+    "studied_credits",
+    "reg_days_before",
+    "module_presentation_length",
+    "clicks_total",
+    "active_days",
+    "n_sites",
+    "max_daily_clicks",
+    "clicks_per_active_day",
+    "clicks_pre",
+    "clicks_m1",
+    "clicks_m2",
+    "m2_to_m1_ratio",
+    "click_momentum",
+    "clicks_forum",
+    "clicks_content",
+    "clicks_quiz",
+    "clicks_resource",
+    "clicks_home",
+    "clicks_other",
+    "quiz_ratio",
+    "forum_ratio",
+    "content_ratio",
+    "n_assessments_submitted",
+    "avg_assessment_score",
+    "min_assessment_score",
+    "max_assessment_score",
+    "assessment_score_std",
+    "avg_days_early",
+    "late_submissions",
+    "failed_assessments",
+    "early_pts_earned",
+    "assessment_completion_rate",
+    "early_weight_ratio",
+    "missed_assessments"
+  ],
+  "cat_cols": [
+    "gender",
+    "age_band",
+    "highest_education",
+    "region",
+    "imd_band",
+    "disability",
+    "code_module",
+    "semester"
+  ],
+  "num_cols": [
+    "num_of_prev_attempts",
+    "studied_credits",
+    "reg_days_before",
+    "module_presentation_length",
+    "clicks_total",
+    "active_days",
+    "n_sites",
+    "max_daily_clicks",
+    "clicks_per_active_day",
+    "clicks_pre",
+    "clicks_m1",
+    "clicks_m2",
+    "m2_to_m1_ratio",
+    "click_momentum",
+    "clicks_forum",
+    "clicks_content",
+    "clicks_quiz",
+    "clicks_resource",
+    "clicks_home",
+    "clicks_other",
+    "quiz_ratio",
+    "forum_ratio",
+    "content_ratio",
+    "n_assessments_submitted",
+    "avg_assessment_score",
+    "min_assessment_score",
+    "max_assessment_score",
+    "assessment_score_std",
+    "avg_days_early",
+    "late_submissions",
+    "failed_assessments",
+    "early_pts_earned",
+    "assessment_completion_rate",
+    "early_weight_ratio",
+    "missed_assessments"
+  ],
+  "defaults": {
+    "gender": "M",
+    "age_band": "0-35",
+    "highest_education": "A Level or Equivalent",
+    "region": "Scotland",
+    "imd_band": "30-40%",
+    "disability": "N",
+    "code_module": "FFF",
+    "semester": "J",
+    "num_of_prev_attempts": 0.0,
+    "studied_credits": 60.0,
+    "reg_days_before": 53.0,
+    "module_presentation_length": 262.0,
+    "clicks_total": 365.0,
+    "active_days": 22.0,
+    "n_sites": 32.0,
+    "max_daily_clicks": 25.0,
+    "clicks_per_active_day": 16.666666666666668,
+    "clicks_pre": 27.0,
+    "clicks_m1": 194.0,
+    "clicks_m2": 114.0,
+    "m2_to_m1_ratio": 0.5882352941176471,
+    "click_momentum": -58.0,
+    "clicks_forum": 62.0,
+    "clicks_content": 52.0,
+    "clicks_quiz": 16.0,
+    "clicks_resource": 12.0,
+    "clicks_home": 77.0,
+    "clicks_other": 44.0,
+    "quiz_ratio": 0.046296296296296294,
+    "forum_ratio": 0.16726835138387486,
+    "content_ratio": 0.1822429906542056,
+    "n_assessments_submitted": 2.0,
+    "avg_assessment_score": 76.0,
+    "min_assessment_score": 68.0,
+    "max_assessment_score": 82.0,
+    "assessment_score_std": 4.242640687119285,
+    "avg_days_early": 0.0,
+    "late_submissions": 0.0,
+    "failed_assessments": 0.0,
+    "early_pts_earned": 1375.0,
+    "assessment_completion_rate": 1.0,
+    "early_weight_ratio": 0.7166666666666667,
+    "missed_assessments": 0.0
+  },
+  "options": {
+    "gender": [
+      "F",
+      "M"
+    ],
+    "age_band": [
+      "0-35",
+      "35-55",
+      "55<="
+    ],
+    "highest_education": [
+      "A Level or Equivalent",
+      "HE Qualification",
+      "Lower Than A Level",
+      "No Formal quals",
+      "Post Graduate Qualification"
+    ],
+    "region": [
+      "East Anglian Region",
+      "East Midlands Region",
+      "Ireland",
+      "London Region",
+      "North Region",
+      "North Western Region",
+      "Scotland",
+      "South East Region",
+      "South Region",
+      "South West Region",
+      "Wales",
+      "West Midlands Region",
+      "Yorkshire Region"
+    ],
+    "imd_band": [
+      "0-10%",
+      "10-20%",
+      "20-30%",
+      "30-40%",
+      "40-50%",
+      "50-60%",
+      "60-70%",
+      "70-80%",
+      "80-90%",
+      "90-100%",
+      "Unknown"
+    ],
+    "disability": [
+      "N",
+      "Y"
+    ],
+    "code_module": [
+      "AAA",
+      "BBB",
+      "CCC",
+      "DDD",
+      "EEE",
+      "FFF",
+      "GGG"
+    ],
+    "semester": [
+      "B",
+      "J"
+    ]
+  },
+  "use_g1_g2": false,
+  "target_scale": 100,
+  "selected_model": "Hybrid Ensemble (DL + Boost)",
+  "test_metrics": {
+    "R2": 0.6333,
+    "MAE": 13.755,
+    "RMSE": 18.434,
+    "MAPE_%": 45.03,
+    "Within_5pts_%": 26.6,
+    "Within_10pts_%": 47.8,
+    "Within_15pts_%": 65.5
+  },
+  "test_rmse": 18.434,
+  "test_mae": 13.755,
+  "test_r2": 0.6333,
+  "n_students_verified": 23985,
+  "n_records_verified": 26361,
+  "raw_total_records": 32593,
+  "raw_unique_students": 28785,
+  "scale": 100,
+  "pass_mark": 40,
+  "good_mark": 70,
+  "dataset": "oulad",
+  "dataset_name": "Open University Learning Analytics Dataset (OULAD)",
+  "verified_student_count": 23985,
+  "verified_record_count": 26361,
+  "title": "Student Performance Regression & Early-Warning AI",
+  "lead": "Trained on 23,985 verified students from the Open University Learning Analytics Dataset. Leverages student demographics, course enrollment, VLE clickstream behavioral analytics, and early assessment scores from the first 60 days to predict the final course score (0\u2013100).",
+  "target_label": "Predicted Final Course Score",
+  "about_data": "Open University Learning Analytics Dataset (OULAD): 26,361 student-module enrollments across 23,985 unique students, 22 module presentations, and over 10.6 million online learning platform interactions.",
+  "sections": [
+    {
+      "title": "Student Profile",
+      "icon": "user-round",
+      "sub": "Demographic & background information from the university registry",
+      "fields": [
+        {
+          "k": "gender",
+          "label": "Gender",
+          "type": "seg",
+          "opts": [
+            [
+              "F",
+              "Female"
+            ],
+            [
+              "M",
+              "Male"
+            ]
+          ],
+          "def": "M",
+          "full": false
+        },
+        {
+          "k": "age_band",
+          "label": "Age Band",
+          "type": "seg",
+          "opts": [
+            [
+              "0-35",
+              "Under 35"
+            ],
+            [
+              "35-55",
+              "35 to 55"
+            ],
+            [
+              "55<=",
+              "Over 55"
+            ]
+          ],
+          "def": "0-35",
+          "full": false
+        },
+        {
+          "k": "highest_education",
+          "label": "Highest Prior Qualification",
+          "type": "seg",
+          "opts": [
+            [
+              "No Formal quals",
+              "No formal"
+            ],
+            [
+              "Lower Than A Level",
+              "Below A-level"
+            ],
+            [
+              "A Level or Equivalent",
+              "A-level"
+            ],
+            [
+              "HE Qualification",
+              "Degree"
+            ],
+            [
+              "Post Graduate Qualification",
+              "Postgraduate"
+            ]
+          ],
+          "def": "A Level or Equivalent",
+          "full": true
+        },
+        {
+          "k": "region",
+          "label": "Geographic Region",
+          "type": "select",
+          "opts": [
+            [
+              "East Anglian Region",
+              "East Anglian Region"
+            ],
+            [
+              "East Midlands Region",
+              "East Midlands Region"
+            ],
+            [
+              "Ireland",
+              "Ireland"
+            ],
+            [
+              "London Region",
+              "London Region"
+            ],
+            [
+              "North Region",
+              "North Region"
+            ],
+            [
+              "North Western Region",
+              "North Western Region"
+            ],
+            [
+              "Scotland",
+              "Scotland"
+            ],
+            [
+              "South East Region",
+              "South East Region"
+            ],
+            [
+              "South Region",
+              "South Region"
+            ],
+            [
+              "South West Region",
+              "South West Region"
+            ],
+            [
+              "Wales",
+              "Wales"
+            ],
+            [
+              "West Midlands Region",
+              "West Midlands Region"
+            ],
+            [
+              "Yorkshire Region",
+              "Yorkshire Region"
+            ]
+          ],
+          "def": "Scotland",
+          "full": false
+        },
+        {
+          "k": "imd_band",
+          "label": "Area Deprivation (IMD Band)",
+          "type": "select",
+          "opts": [
+            [
+              "Unknown",
+              "Unknown"
+            ],
+            [
+              "0-10%",
+              "0-10%"
+            ],
+            [
+              "10-20%",
+              "10-20%"
+            ],
+            [
+              "20-30%",
+              "20-30%"
+            ],
+            [
+              "30-40%",
+              "30-40%"
+            ],
+            [
+              "40-50%",
+              "40-50%"
+            ],
+            [
+              "50-60%",
+              "50-60%"
+            ],
+            [
+              "60-70%",
+              "60-70%"
+            ],
+            [
+              "70-80%",
+              "70-80%"
+            ],
+            [
+              "80-90%",
+              "80-90%"
+            ],
+            [
+              "90-100%",
+              "90-100%"
+            ]
+          ],
+          "def": "30-40%",
+          "full": false
+        },
+        {
+          "k": "disability",
+          "label": "Declared Disability",
+          "type": "toggle",
+          "def": "N",
+          "vals": [
+            "Y",
+            "N"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Course & Enrollment",
+      "icon": "book-open",
+      "sub": "Curriculum module, study load, and registration timing",
+      "fields": [
+        {
+          "k": "code_module",
+          "label": "Module Code",
+          "type": "seg",
+          "opts": [
+            [
+              "AAA",
+              "AAA"
+            ],
+            [
+              "BBB",
+              "BBB"
+            ],
+            [
+              "CCC",
+              "CCC"
+            ],
+            [
+              "DDD",
+              "DDD"
+            ],
+            [
+              "EEE",
+              "EEE"
+            ],
+            [
+              "FFF",
+              "FFF"
+            ],
+            [
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "def": "FFF",
+          "full": true
+        },
+        {
+          "k": "semester",
+          "label": "Intake Semester",
+          "type": "seg",
+          "opts": [
+            [
+              "B",
+              "February (B)"
+            ],
+            [
+              "J",
+              "October (J)"
+            ]
+          ],
+          "def": "J",
+          "full": false
+        },
+        {
+          "k": "num_of_prev_attempts",
+          "label": "Previous Module Attempts",
+          "type": "slider",
+          "min": 0,
+          "max": 6,
+          "step": 1,
+          "def": 0,
+          "lo": "First attempt",
+          "hi": "6 or more"
+        },
+        {
+          "k": "studied_credits",
+          "label": "Total Credits Studied Concurrently",
+          "type": "slider",
+          "min": 30,
+          "max": 360,
+          "step": 30,
+          "def": 60,
+          "lo": "30 credits",
+          "hi": "360 credits"
+        },
+        {
+          "k": "reg_days_before",
+          "label": "Days Registered Before Course Start",
+          "type": "slider",
+          "min": -30,
+          "max": 250,
+          "step": 1,
+          "def": 53,
+          "lo": "Late (post-start)",
+          "hi": "250 days early"
+        }
+      ]
+    },
+    {
+      "title": "Online Learning Engagement (First 60 Days)",
+      "icon": "mouse-pointer-click",
+      "sub": "Virtual Learning Environment (VLE) interaction patterns during early weeks",
+      "fields": [
+        {
+          "k": "active_days",
+          "label": "Days Active on Platform",
+          "type": "slider",
+          "min": 0,
+          "max": 68,
+          "step": 1,
+          "def": 22,
+          "lo": "0 days",
+          "hi": null
+        },
+        {
+          "k": "n_sites",
+          "label": "Distinct Learning Resources Visited",
+          "type": "slider",
+          "min": 0,
+          "max": 110,
+          "step": 1,
+          "def": 32,
+          "lo": "0 materials",
+          "hi": null
+        },
+        {
+          "k": "clicks_total",
+          "label": "Total Platform Clicks",
+          "type": "slider",
+          "min": 0,
+          "max": 2600,
+          "step": 10,
+          "def": 360,
+          "lo": "0 clicks",
+          "hi": null
+        },
+        {
+          "k": "clicks_forum",
+          "label": "Discussion Forum Clicks",
+          "type": "slider",
+          "min": 0,
+          "max": 960,
+          "step": 1,
+          "def": 62,
+          "lo": "0",
+          "hi": null
+        },
+        {
+          "k": "clicks_content",
+          "label": "Course Content Clicks",
+          "type": "slider",
+          "min": 0,
+          "max": 770,
+          "step": 1,
+          "def": 52,
+          "lo": "0",
+          "hi": null
+        },
+        {
+          "k": "clicks_quiz",
+          "label": "Formative Quiz Clicks",
+          "type": "slider",
+          "min": 0,
+          "max": 520,
+          "step": 1,
+          "def": 16,
+          "lo": "0",
+          "hi": null
+        },
+        {
+          "k": "clicks_resource",
+          "label": "Static Resource Clicks",
+          "type": "slider",
+          "min": 0,
+          "max": 85,
+          "step": 1,
+          "def": 12,
+          "lo": "0",
+          "hi": null
+        },
+        {
+          "k": "clicks_home",
+          "label": "Course Homepage Clicks",
+          "type": "slider",
+          "min": 0,
+          "max": 490,
+          "step": 1,
+          "def": 77,
+          "lo": "0",
+          "hi": null
+        }
+      ]
+    },
+    {
+      "title": "Early Assessment Performance (First 60 Days)",
+      "icon": "file-check",
+      "sub": "Scores and submission timing on early Tutor-Marked & Computer-Marked assessments",
+      "fields": [
+        {
+          "k": "n_assessments_submitted",
+          "label": "Assessments Submitted",
+          "type": "slider",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "def": 2,
+          "lo": "0",
+          "hi": "5"
+        },
+        {
+          "k": "avg_assessment_score",
+          "label": "Average Early Assessment Score",
+          "type": "slider",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "def": 76,
+          "lo": "0",
+          "hi": "100"
+        },
+        {
+          "k": "assessment_score_std",
+          "label": "Score Consistency (Std Dev)",
+          "type": "slider",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "def": 4,
+          "lo": "Uniform",
+          "hi": "Variable"
+        },
+        {
+          "k": "avg_days_early",
+          "label": "Average Days Submitted Ahead of Deadline",
+          "type": "slider",
+          "min": -20,
+          "max": 25,
+          "step": 1,
+          "def": 0,
+          "lo": "Late",
+          "hi": "25 days early"
+        },
+        {
+          "k": "late_submissions",
+          "label": "Number of Overdue Submissions",
+          "type": "slider",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "def": 0,
+          "lo": "0",
+          "hi": "4+"
+        },
+        {
+          "k": "assessment_completion_rate",
+          "label": "Assessment Completion Ratio",
+          "type": "slider",
+          "min": 0,
+          "max": 1,
+          "step": 0.1,
+          "def": 1,
+          "lo": "0%",
+          "hi": "100%"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "f": "avg_assessment_score",
+      "op": "<",
+      "v": 40,
+      "k": "bad",
+      "t": "Early assessment average is below the passing mark (40). Critical need for academic tutoring."
+    },
+    {
+      "f": "n_assessments_submitted",
+      "op": "<",
+      "v": 1,
+      "k": "bad",
+      "t": "Zero assessments submitted in the first 60 days. Severe non-engagement risk."
+    },
+    {
+      "f": "active_days",
+      "op": "<",
+      "v": 8,
+      "k": "bad",
+      "t": "Fewer than 8 active days on the VLE during the first two months. High attrition indicator."
+    },
+    {
+      "f": "late_submissions",
+      "op": ">=",
+      "v": 2,
+      "k": "warn",
+      "t": "Multiple late assessment submissions. Time-management counseling recommended."
+    },
+    {
+      "f": "assessment_completion_rate",
+      "op": "<",
+      "v": 0.5,
+      "k": "warn",
+      "t": "Completed less than half of scheduled early assignments."
+    },
+    {
+      "f": "clicks_total",
+      "op": "<",
+      "v": 120,
+      "k": "warn",
+      "t": "Low online learning activity. Student may be studying offline or falling behind."
+    },
+    {
+      "f": "clicks_quiz",
+      "op": "<",
+      "v": 3,
+      "k": "warn",
+      "t": "Minimal formative quiz participation. Self-assessment practice helps reinforce retention."
+    },
+    {
+      "f": "num_of_prev_attempts",
+      "op": ">=",
+      "v": 1,
+      "k": "warn",
+      "t": "Student has previously attempted this module. Targeted remediation advised."
+    },
+    {
+      "f": "studied_credits",
+      "op": ">=",
+      "v": 120,
+      "k": "warn",
+      "t": "Heavy concurrent credit load (120+ credits). Monitor workload balance."
+    },
+    {
+      "f": "avg_assessment_score",
+      "op": ">=",
+      "v": 75,
+      "k": "ok",
+      "t": "Distinction-level performance on early coursework. Student is on track."
+    },
+    {
+      "f": "active_days",
+      "op": ">=",
+      "v": 25,
+      "k": "ok",
+      "t": "Consistent, high-frequency engagement with course materials across multiple weeks."
+    },
+    {
+      "f": "clicks_total",
+      "op": ">=",
+      "v": 800,
+      "k": "ok",
+      "t": "High platform utilization and strong study habits."
+    }
+  ],
+  "batch_cols": [
+    "gender",
+    "code_module",
+    "age_band",
+    "avg_assessment_score",
+    "active_days",
+    "clicks_total",
+    "Predicted_Score",
+    "Status"
+  ]
+}

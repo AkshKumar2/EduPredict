@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EduPredict · Student Performance Deep Learning AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<aside class="side">
+  <div class="brand">
+    <div class="logo"><i data-lucide="graduation-cap"></i></div>
+    <div><b>EduPredict</b><span>Student Performance AI</span></div>
+  </div>
+  <nav>
+    <a href="#predict" data-view="predict" class="active"><i data-lucide="sparkles"></i><span>Live Predict</span></a>
+    <a href="#batch" data-view="batch"><i data-lucide="table-2"></i><span>Batch Predict</span></a>
+    <a href="#performance" data-view="performance"><i data-lucide="bar-chart-3"></i><span>Performance</span></a>
+    <a href="#about" data-view="about"><i data-lucide="info"></i><span>About & Data</span></a>
+  </nav>
+  <div class="side-foot glass">
+    <i data-lucide="brain-circuit"></i>
+    <div><b>Tabular Deep Learning</b><span>TensorFlow · Keras · XGBoost</span></div>
+  </div>
+</aside>
+
+<main>
+  <!-- LIVE PREDICT -->
+  <section id="view-predict" class="view active">
+    <header class="head">
+      <div class="eyebrow">Live Prediction & Early-Warning AI</div>
+      <h1 id="ph1">Predict Student Final Score</h1>
+      <p class="lead" id="plead">Adjust demographics, course enrollment, learning platform clickstream, and early assessment performance. The model calculates the predicted final score (0–100) and statistical uncertainty in real time.</p>
+    </header>
+    <div class="split">
+      <div id="form" class="stack"></div>
+      <aside class="glass result" id="result">
+        <div class="eyebrow" id="rlabel">Predicted Final Score</div>
+        <div class="ring">
+          <svg viewBox="0 0 140 140"><circle class="bg" cx="70" cy="70" r="58"/><circle class="fg" id="ringfg" cx="70" cy="70" r="58"/></svg>
+          <div class="center"><b id="gnum">–</b><span id="gscale">out of 100</span></div>
+        </div>
+        <div class="status" id="gstatus">Calculating…</div>
+        <div class="est" id="gest"></div>
+        <div class="uncertainty-box" id="gci"></div>
+        <div class="band"><i class="s1"></i><i class="s2"></i><i class="s3"></i><em id="gmark"></em></div>
+        <div class="bandlbl"><span>At Risk (&lt;40)</span><span>Average (40–69)</span><span>Good / Distinction (70+)</span></div>
+        <h3>Actionable Insights & Flags</h3>
+        <ul class="ins" id="ins"></ul>
+        <button class="btn ghost" id="reset"><i data-lucide="rotate-ccw"></i>Reset to Cohort Medians</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- BATCH PREDICT -->
+  <section id="view-batch" class="view">
+    <header class="head">
+      <div class="eyebrow">Cohort-Scale Inference</div>
+      <h1>Predict a Complete Student Cohort</h1>
+      <p class="lead">Upload a CSV of student records or test with the representative holdout test sample. The preprocessor validates features and generates individual predictions, risk levels, and confidence intervals.</p>
+    </header>
+    <div class="glass card">
+      <div class="drop" id="drop">
+        <div class="dicon"><i data-lucide="upload"></i></div>
+        <b>Drop your student dataset CSV here or click to browse</b>
+        <span>Supports comma or semicolon separated files · Up to 3,000 student records</span>
+        <input type="file" id="file" accept=".csv" hidden>
+      </div>
+      <div class="row">
+        <button class="btn" id="sample"><i data-lucide="database"></i>Load OULAD Test Sample (400 students)</button>
+        <span class="muted" id="bmsg"></span>
+      </div>
+    </div>
+    <div id="bout"></div>
+  </section>
+
+  <!-- PERFORMANCE BENCHMARK -->
+  <section id="view-performance" class="view">
+    <header class="head">
+      <div class="eyebrow">Validation & Benchmark</div>
+      <h1>Model Evaluation & Comparative Analysis</h1>
+      <p class="lead">Rigorous holdout test-set evaluation across Deep Learning (Tabular ResNet MLP), Gradient Boosting, and Baseline models on unseen students.</p>
+    </header>
+    <div id="perf"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="view-about" class="view">
+    <header class="head">
+      <div class="eyebrow">System Architecture & Methodology</div>
+      <h1>About This System</h1>
+      <p class="lead">A large-scale student academic performance regression system engineered with deep learning and behavioral learning analytics.</p>
+    </header>
+    <div class="cards3">
+      <div class="glass card">
+        <h2><span class="ibox"><i data-lucide="database"></i></span>Large-Scale OULAD Dataset</h2>
+        <p class="muted" id="about-data">Open University Learning Analytics Dataset: 32,593 student enrollments across 28,785 unique students, 22 presentations, and over 10.6 million clickstream interaction records.</p>
+      </div>
+      <div class="glass card">
+        <h2><span class="ibox"><i data-lucide="layers"></i></span>Deep Learning Architecture</h2>
+        <p class="muted" id="about-model">Tabular ResNet Multi-Layer Perceptron (MLP) with Batch Normalization, Dropout (0.3), SiLU nonlinear activations, residual skip connections, and AdamW weight decay optimization. Blended with tuned XGBoost and HistGradientBoosting for maximum generalization.</p>
+      </div>
+      <div class="glass card">
+        <h2><span class="ibox"><i data-lucide="target"></i></span>Strict Leakage Prevention</h2>
+        <p class="muted">Strict student-level GroupShuffleSplit (70% train, 15% validation, 15% holdout test) guarantees that no individual student appears in multiple splits. Preprocessing pipelines are fit strictly on training splits. All input features are restricted to the first 60 days.</p>
+      </div>
+      <div class="glass card">
+        <h2><span class="ibox"><i data-lucide="shield-alert"></i></span>Responsible & Actionable AI</h2>
+        <p class="muted">Predictions represent statistical estimates accompanied by RMSE prediction intervals. Designed exclusively to provide proactive academic advisors with early warnings to offer tutoring, study planning, and motivational support.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
