@@ -1,123 +1,133 @@
 # EduPredict
-# EduPredict
 ### Explainable AI-Based Student Performance Prediction System
 
-EduPredict is a web-based student performance regression and early-warning system that predicts a student's final continuous-assessment score (0–100) using academic information, course enrolment details, online learning activity, and early assessment performance from the first 60 days of a course.
+EduPredict is a web-based student performance regression and early-warning system. It estimates a student's **final continuous-assessment score (0–100)** using student profile information, course enrolment details, online learning activity, and assessment information available during the first 60 days of a course.
 
-The project combines Machine Learning, Deep Learning, Explainable AI, and a Flask-based web application to provide data-driven insights into student performance.
+The project combines a Python machine-learning pipeline, a Flask inference server, and a browser-based dashboard. It is intended to support early review and academic intervention. Its predictions are advisory estimates, not official grades or decisions.
 
-## 🚀 Features
+> **Important:** EduPredict predicts a continuous-assessment aggregate. It does not predict an examination-only mark, and it is not a pass/fail classification model.
 
-- **Individual Student Prediction:** Predict student performance using academic and engagement information.
-- **Early Warning System:** Categorises predicted performance into At Risk, Average, and Good.
-- **Explainable AI:** Uses permutation feature importance to identify influential predictors.
-- **Batch Prediction:** Upload CSV files to generate predictions for multiple students.
-- **Performance Dashboard:** Displays model evaluation metrics and visualisations.
-- **Deep Learning Integration:** Implements a tabular residual Multilayer Perceptron (MLP).
-- **Hybrid Ensemble:** Combines XGBoost, HistGradientBoosting, and Deep Learning predictions.
-- **Interactive Interface:** Modern, responsive dashboard with real-time predictions.
+---
 
-## 🧠 How It Works
+## Table of Contents
+- [Key Features](#key-features)
+- [How It Works](#how-it-works)
+- [Dataset](#dataset)
+- [Feature Engineering](#feature-engineering)
+- [Models](#models)
+- [Evaluation Results](#evaluation-results)
+- [Explainable AI](#explainable-ai)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Running the Project](#running-the-project)
+- [API Overview](#api-overview)
+- [Prediction Categories](#prediction-categories)
+- [Limitations](#limitations)
+- [Responsible Use](#responsible-use)
+- [Author](#author)
 
-1. Collects student profile, course registration, assessment, and online learning activity data.
-2. Processes student engagement records from the first 60 days.
-3. Extracts and engineers 43 predictive features.
-4. Applies preprocessing, including numerical scaling and categorical encoding.
-5. Trains and evaluates multiple regression models.
-6. Combines selected models using a weighted ensemble.
-7. Generates predicted continuous-assessment scores.
-8. Displays performance categories and insights through the web interface.
+## Key Features
 
-## 📊 Dataset
+- **Individual prediction:** enter student, course, engagement, and early-assessment details to estimate a score.
+- **Early-warning status:** translates the predicted score into At risk, Average, or Good categories.
+- **Rule-based insight flags:** presents supporting indicators based on the supplied information.
+- **Batch prediction:** upload a CSV containing multiple student records and receive predictions for the cohort.
+- **Performance dashboard:** view saved model evaluation results and generated analysis visualisations.
+- **Global feature importance:** shows permutation feature importance for the XGBoost model component.
+- **Responsive browser interface:** a dark, glass-style dashboard built with HTML, CSS, and JavaScript.
 
-The project uses the **Open University Learning Analytics Dataset (OULAD)**.
+## How It Works
 
-The dataset contains student demographic information, course registration records, assessment submissions, and Virtual Learning Environment (VLE) activity.
+1. **Load source data.** The training pipeline reads OULAD student, registration, course, assessment, and VLE tables.
+2. **Construct the target.** It calculates a continuous-assessment aggregate from submitted non-exam assessments.
+3. **Build early-course features.** It aggregates VLE activity and assessment information available up to day 60.
+4. **Prepare the data.** It cleans and joins records, creates 43 model features, and removes records withdrawn on or before day 60.
+5. **Split by student.** Student IDs are grouped so records belonging to the same student stay in one partition.
+6. **Train and compare models.** Six regression configurations are evaluated using the same data partitions.
+7. **Save model artefacts.** The preprocessing pipeline, selected model components, metadata, results, and plots are saved.
+8. **Serve predictions.** Flask loads the saved artefacts, processes requests, and returns predictions to the browser.
+9. **Display results.** The frontend presents the estimated score, status, insights, batch output, and performance information.
 
-### Dataset Statistics
+## Dataset
 
-| Description | Count |
+EduPredict uses the **Open University Learning Analytics Dataset (OULAD)**, which contains information about students taking online distance-learning courses.
+
+The project uses these source tables:
+
+| OULAD table | Role in EduPredict |
+|---|---|
+| `studentInfo.csv` | Student background and module enrolment information |
+| `studentRegistration.csv` | Registration timing and early-withdrawal filtering |
+| `courses.csv` | Course presentation duration |
+| `assessments.csv` | Assessment types, dates, and weights |
+| `studentAssessment.csv` | Submitted assessment scores and dates |
+| `vle.csv` | Maps learning-site IDs to activity categories |
+| `studentVle.csv` | Daily virtual learning environment click records |
+
+### Dataset scale in the documented training run
+
+| Measure | Count |
 |---|---:|
-| Unique Students | 23,985 |
-| Student-Course Records | 26,361 |
-| Raw Student Records | 32,593 |
-| VLE Click Records | 10,655,280 |
-| Module Presentations | 22 |
+| Raw `studentInfo.csv` rows | 32,593 |
+| Raw unique student IDs | 28,785 |
+| Usable student-course records | 26,361 |
+| Unique students represented in modelling data | 23,985 |
+| Student VLE click records | 10,655,280 |
+| Module presentations | 22 |
 
-The modelling dataset contains 26,361 student-course records representing 23,985 unique students.
+A student can appear in multiple student-course records. Therefore, **26,361 is the number of modelling records, not the number of unique students**.
 
-## ⚙️ Feature Engineering
+The training pipeline processes the large `studentVle.csv` file in chunks to reduce memory usage.
 
-The system uses **43 engineered features**, divided into:
+## What the Model Predicts
 
-- 8 categorical features
-- 35 numerical features
+The target is named `final_score` in the training code. It is a score from 0 to 100 created from submitted **non-exam assessments**:
 
-Features include:
+- Exam assessments are excluded.
+- For most modules, submitted non-exam scores are aggregated using assessment weights.
+- Module `GGG` receives special handling because its assessment weights are recorded as zero; the project uses the mean of submitted non-exam scores for that module.
+- The result is clipped to the 0–100 range.
 
-- Student demographic information
-- Previous module attempts
-- Registration timing
-- Total platform clicks
-- Active learning days
-- Learning resource interactions
-- Forum and quiz engagement
-- Early assessment scores
-- Assessment completion rate
-- Submission timing
-- Learning engagement trends
+This target is **not** OULAD's `final_result` label and is not an examination mark.
 
-VLE activities are grouped into six categories:
+## Feature Engineering
 
-- Forum
-- Content
-- Quiz
-- Resource
-- Homepage
-- Other
+The model uses **43 engineered inputs**:
 
-## 🤖 Machine Learning Models
+- 8 categorical features: `gender`, `age_band`, `highest_education`, `region`, `imd_band`, `disability`, `code_module`, and `semester`.
+- 35 numerical features covering previous attempts, studied credits, registration timing, course duration, VLE engagement, activity patterns, early assessment performance, submission timing, and assessment completion.
 
-Six regression configurations are compared:
+VLE activity types are grouped into six categories: forum, content, quiz, resource, home, and other.
+
+The live form exposes 25 fields for manual entry. The server fills the remaining 18 model inputs from saved training-data defaults when they are not supplied. These defaults are cohort-derived fallback values, not personalised values. In particular, changing a visible total does not automatically recompute every hidden derived feature.
+
+## Models
+
+The training pipeline compares six regression configurations:
 
 1. Linear Regression
 2. Random Forest Regressor
 3. HistGradientBoosting Regressor
 4. XGBoost Regressor
-5. Deep Learning (Tabular Residual MLP)
-6. Hybrid Ensemble (DL + Boost)
+5. Deep Learning tabular residual MLP
+6. Hybrid Ensemble (XGBoost + HistGradientBoosting + MLP)
 
-### Deep Learning Architecture
+The neural network is a tabular multilayer perceptron with dense layers, batch normalisation, SiLU activations, dropout, and residual connections. It is not a CNN, RNN, or transformer.
 
-The neural network is a tabular residual Multilayer Perceptron built using TensorFlow and Keras.
-
-It incorporates:
-
-- Dense layers
-- Batch Normalisation
-- SiLU activation functions
-- Dropout regularisation
-- Residual connections
-- AdamW optimiser
-- Mean Squared Error loss
-- Early Stopping
-
-### Hybrid Ensemble
-
-The final ensemble combines three models using fixed weights:
+The saved hybrid prediction is a fixed weighted combination:
 
 ```text
-Ensemble Prediction =
-    0.40 × XGBoost
-  + 0.30 × HistGradientBoosting
-  + 0.30 × Deep Learning MLP
+Ensemble score = 0.40 × XGBoost
+               + 0.30 × HistGradientBoosting
+               + 0.30 × MLP
 ```
 
-## 📈 Model Evaluation
+The weights are fixed in the training and inference code; they are not learned by a separate ensemble-fitting process.
 
-The models are evaluated using a student-grouped training, validation, and testing strategy.
+## Evaluation Results
 
-### Performance Results
+The documented holdout-test results are:
 
 | Model | R² | MAE | RMSE |
 |---|---:|---:|---:|
@@ -126,75 +136,75 @@ The models are evaluated using a student-grouped training, validation, and testi
 | HistGradientBoosting | 0.6284 | 13.777 | 18.556 |
 | XGBoost | 0.6305 | 13.682 | 18.504 |
 | Deep Learning (MLP) | 0.6095 | 14.349 | 19.023 |
-| **Hybrid Ensemble** | **0.6333** | **13.755** | **18.434** |
+| **Hybrid Ensemble (DL + Boost)** | **0.6333** | **13.755** | **18.434** |
 
-The Hybrid Ensemble achieved the highest R² value among the evaluated configurations.
+The selected configuration is the Hybrid Ensemble because it has the highest stored test R² in this run.
 
-**Note:** R² is a regression evaluation metric, not classification accuracy. The model's predictions are estimates and can differ from actual student scores.
+**Metric interpretation:** R² = 0.6333 is not “63.33% accuracy.” R² is a regression goodness-of-fit metric. The hybrid model's MAE is about 13.76 score points, so individual predictions can differ meaningfully from actual outcomes. The documented percentage of predictions within ±10 points is 47.8%.
 
-## 🔍 Explainable AI
+The data split is grouped by student ID into approximately 70% training, 15% validation, and 15% holdout test records. This evaluates held-out students within the dataset distribution; it does not establish performance at another institution or in a future academic year.
 
-EduPredict implements permutation feature importance to understand which input features influence model performance.
+## Explainable AI
 
-The technique works by:
+The project calculates **global permutation feature importance for the XGBoost component**:
 
-1. Calculating baseline model performance.
-2. Randomly shuffling one feature.
-3. Measuring the change in prediction error.
-4. Repeating the process multiple times.
-5. Ranking features according to their importance.
+1. Measure baseline MAE on the holdout test data.
+2. Shuffle one input feature while leaving other features unchanged.
+3. Transform the modified data with the fitted preprocessor.
+4. Recalculate XGBoost predictions and MAE.
+5. Repeat the shuffle three times and average the MAE increase.
 
-### Top Predictive Features
+The largest documented importance values are:
 
-| Feature | Importance (MAE Increase) |
+| Feature | MAE increase after shuffling |
 |---|---:|
-| Early Weight Ratio | 8.066 |
-| Course Module | 4.414 |
-| Average Days Early | 0.781 |
-| Early Points Earned | 0.671 |
-| Active Days | 0.637 |
+| `early_weight_ratio` | 8.066 |
+| `code_module` | 4.414 |
+| `avg_days_early` | 0.781 |
+| `early_pts_earned` | 0.671 |
+| `active_days` | 0.637 |
 
-The current implementation calculates global permutation importance for the XGBoost component. It does not currently implement SHAP, LIME, or individual student-level feature attribution.
+These are global model-importance measurements, not causal effects. The current implementation does not provide SHAP, LIME, counterfactual explanations, or per-student feature attribution. The importance scores are calculated for XGBoost, not for the hybrid ensemble as a whole.
 
-## 🛠️ Technology Stack
+## Technology Stack
 
-| Category | Technologies |
-|---|---|
-| Programming Language | Python |
-| Machine Learning | Scikit-learn, XGBoost |
-| Deep Learning | TensorFlow, Keras |
-| Data Processing | Pandas, NumPy |
-| Backend | Flask |
-| Frontend | HTML, CSS, JavaScript |
-| Visualisation | Matplotlib, Seaborn |
-| Model Persistence | Joblib, Keras |
+- **Language:** Python
+- **Machine learning:** scikit-learn, XGBoost
+- **Deep learning:** TensorFlow / Keras
+- **Data processing:** pandas, NumPy
+- **Model persistence:** joblib, Keras model files
+- **Backend:** Flask
+- **Frontend:** HTML, CSS, JavaScript
+- **Visualisation:** Matplotlib, Seaborn
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 EduPredict/
-│
 ├── data/
 │   ├── anonymisedData.zip
 │   ├── oulad_sample.csv
 │   └── oulad/
-│
+│       ├── studentInfo.csv
+│       ├── studentRegistration.csv
+│       ├── courses.csv
+│       ├── assessments.csv
+│       ├── studentAssessment.csv
+│       ├── vle.csv
+│       └── studentVle.csv
 ├── models/
 │   ├── preprocessor.joblib
 │   ├── xgboost.joblib
 │   ├── hgb.joblib
 │   ├── mlp.keras
 │   └── meta.json
-│
-├── outputs/
-│   ├── results.json
-│   └── evaluation plots
-│
+├── models_oulad/          # Fallback/duplicate model artefacts
+├── outputs/               # Evaluation results and plots
+├── outputs_oulad/         # Fallback/duplicate output artefacts
 ├── static/
 │   ├── index.html
 │   ├── style.css
 │   └── app.js
-│
 ├── train.py
 ├── train_oulad.py
 ├── server.py
@@ -203,105 +213,120 @@ EduPredict/
 └── README.md
 ```
 
-## 💻 Installation and Setup
+The exact files present may vary by repository revision. The documented project archive contains the paths shown above. The `models_oulad/` and `outputs_oulad/` directories are fallback copies, not independently trained model versions.
 
-### 1. Clone the Repository
+## Installation
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/AkshKumar2/EduPredict.git
 cd EduPredict
 ```
 
-### 2. Create a Virtual Environment
+### 2. Create and activate a virtual environment
 
-```bash
+**Windows (PowerShell):**
+
+```powershell
 python -m venv venv
+.\venv\Scripts\Activate.ps1
 ```
 
-Activate it:
+**macOS / Linux:**
 
-**Windows:**
 ```bash
-venv\Scripts\activate
-```
-
-**Linux / macOS:**
-```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run the Application
+Use a Python and library environment compatible with the versions in `requirements.txt` and the saved model artefacts.
+
+### 4. Check the dataset
+
+The training pipeline looks for the extracted OULAD CSV files in recognised data directories. If the extracted files are not present but `data/anonymisedData.zip` is available, the training code can extract the archive into `data/oulad`.
+
+If the dataset is not included in your clone, obtain OULAD from its official source and place the CSV files in `data/oulad/` using the filenames listed above.
+
+## Running the Project
+
+### Run the web application
 
 ```bash
 python server.py
 ```
 
-Open the local URL displayed in the terminal to access EduPredict.
+Open the local address printed by Flask in your browser. The server loads the saved model artefacts and metadata; make sure the expected model files are present.
 
-### 5. Train the Models (Optional)
-
-To train the models again using the OULAD dataset:
+### Train the models again
 
 ```bash
 python train.py
 ```
 
-Alternatively:
+`train_oulad.py` is a small entry-point wrapper that imports and runs the main training function from `train.py`:
 
 ```bash
 python train_oulad.py
 ```
 
-The training process generates model artefacts, evaluation results, and visualisation files.
+Training requires the OULAD source tables and can take substantially longer than starting the already-trained web application.
 
-## 🌐 Application Modules
+## API Overview
 
-The web application provides four main sections:
+The Flask backend serves the browser interface and exposes endpoints for metadata, prediction, batch processing, and saved evaluation results. The documented application includes these API routes:
 
-| Module | Description |
+| Endpoint | Purpose |
 |---|---|
-| Live Predict | Individual student performance prediction |
-| Batch Prediction | CSV-based prediction for multiple students |
-| Performance | Model evaluation and performance visualisations |
-| About | Project and dataset information |
+| `GET /api/meta` | Returns form metadata, feature definitions, and defaults |
+| `POST /api/predict` | Generates an individual prediction |
+| `POST /api/batch` | Processes a batch of student records |
+| `GET /api/results` | Returns saved model evaluation results |
 
-## ⚠️ Limitations
+Check `server.py` for the exact request and response schemas in the current code revision.
 
-- Predictions are based on historical OULAD data.
-- The model predicts a continuous-assessment aggregate, not examination marks.
-- Students who withdrew on or before day 60 are excluded from the modelling dataset.
-- The live form exposes 25 of the 43 model features. Missing features use saved training-data defaults.
-- The current explainability implementation provides global XGBoost feature importance rather than individual explanations.
-- Model performance on other institutions or future academic years has not been independently established.
+## Prediction Categories
 
-## 🔐 Responsible Use
+The interface applies these thresholds **after** the regression model produces a numerical prediction:
 
-EduPredict is designed as an educational decision-support tool.
+| Predicted score | Interface status |
+|---|---|
+| Below 40 | At risk |
+| 40 to below 70 | Average |
+| 70 to 100 | Good / Distinction in the individual prediction view |
 
-Predictions should be treated as advisory estimates and should not replace human judgement. The system should not be used as the sole basis for grading, admission, academic progression, or disciplinary decisions.
+These thresholds are application rules, not a separately trained classification model.
 
-Student information should be handled securely and used responsibly.
+## Limitations
 
-## 👨‍💻 Author
+- The system does not connect to a live university student information system.
+- Records withdrawn on or before day 60 are excluded, so the model is not an early-withdrawal predictor.
+- Early assessment marks are used as predictors and also contribute to the constructed continuous-assessment target. The task is therefore forecasting the final coursework aggregate from partial coursework information, not predicting an entirely unseen examination result.
+- The manual form exposes only 25 of the 43 features. Missing inputs are filled using stored cohort defaults, and hidden derived fields are not automatically recalculated from every visible form value.
+- The reported test results do not prove generalisation to other universities, courses, or future academic years.
+- Global permutation importance is not a causal explanation or an individual student's explanation.
+- Predictions may be affected by data quality, missing context, and circumstances not represented in OULAD.
 
-**Aksh Kumar**
+## Responsible Use
 
+EduPredict should be used as a decision-support and educational review aid only. A low predicted score should prompt supportive human review, not an automatic penalty or judgement about a student's ability, effort, or motivation. Do not use the model as the sole basis for grading, admission, progression, disciplinary action, or other high-impact decisions.
+
+Handle student information securely, minimise personal data, and obtain appropriate permission before using real student records.
+
+## Author
+
+**Aksh Kumar**  
 School of Computer Science and Engineering  
 Lovely Professional University  
-Phagwara, India
+Phagwara, India  
+Email: akshkumarnew@gmail.com
 
-📧 Email: akshkumarnew@gmail.com
+## License
 
-🔗 GitHub: [AkshKumar2](https://github.com/AkshKumar2)
-
-🔗 Repository: [EduPredict](https://github.com/AkshKumar2/EduPredict)
-
----
-
-⭐ If you find this project interesting, consider giving the repository a star!
+This repository includes an MIT license. See [`LICENSE`](LICENSE) for the license text.
