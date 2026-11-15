@@ -1,9 +1,7 @@
-pandas
+Flask
 numpy
+pandas
 scikit-learn
-tensorflow
-matplotlib
-seaborn
 joblib
-flask
 xgboost
+tensorflow-cpu==2.20.0
