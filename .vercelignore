@@ -1,0 +1,22 @@
+
+# Raw training datasets
+data/oulad/
+data/anonymisedData.zip
+
+# Duplicate fallback artifacts
+models_oulad/
+outputs_oulad/
+
+# Training code
+train.py
+train_oulad.py
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Development files
+.venv/
+venv/
+.ipynb_checkpoints/
